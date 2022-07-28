@@ -3,12 +3,17 @@
 $PDO = new PDO("mysql:host=localhost; port=3306; dbname=crud_productos", "root", "");
 $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$consulta = $PDO->prepare("SELECT * FROM productos ORDER BY fecha_creacion");
-$consulta->execute();
-$productos = $consulta->fetchAll(pdo::FETCH_ASSOC);
 /* echo "<pre>";
 var_dump($_POST);
 echo "</pre>"; */
+
+$nombre = $_POST['nombre'];
+$imagen = $_POST['imagen'];
+$precio = $_POST['precio'];
+$descripcion = $_POST['descripcion'];
+
+$PDO->exec("INSERT INTO productos(nombre, imagen, precio, descripcion)
+                            VALUE('$nombre', '$imagen', '$precio', '$descripcion')");
 ?>
 
 <!doctype html>
@@ -25,7 +30,7 @@ echo "</pre>"; */
     <h1>Creación de Productos</h1>
     <a href="index.php"><button type="button" class="btn btn-success btn-lg">Volver</button></a>
 
-    <form method="post" >
+    <form method="post" enctype="multipart/form-data">
 
   <div class="mb-3">
     <label>Imagen</label>
