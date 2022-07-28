@@ -7,7 +7,7 @@ $consulta = $PDO->prepare("SELECT * FROM productos ORDER BY fecha_creacion");
 $consulta->execute();
 $productos = $consulta->fetchAll(pdo::FETCH_ASSOC);
 /* echo "<pre>";
-var_dump($productos);
+var_dump($_POST);
 echo "</pre>"; */
 ?>
 
@@ -22,37 +22,30 @@ echo "</pre>"; */
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
   </head>
   <body>
-    <h1>CRUD Productos</h1>
-    <a href="crear.php"><button type="button" class="btn btn-success btn-lg">Crear</button></a>
+    <h1>Creación de Productos</h1>
+    <a href="index.php"><button type="button" class="btn btn-success btn-lg">Volver</button></a>
 
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Imagen</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Descripcion</th>
-      <th scope="col">Precio</th>
-      <th scope="col">fecha de creacion</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($productos as $i => $producto) {?>
-        <tr>
-        <th scope="row"><?=$i + 1?></th>
-        <td></td>
-        <td><?=$producto['nombre']?></td>
-        <td><?=$producto['descripcion']?></td>
-        <td><?=$producto['precio']?></td>
-        <td><?=$producto['fecha_creacion']?></td>
-        <td>
-            <button type="button" class="btn btn-info btn-sm">Editar</button>
-            <button type="button" class="btn btn-danger btn-sm">Borrar</button>
-        </td>
-        </tr>
-    <?php }?>
-    </tbody>
-</table>
+    <form method="post" >
+
+  <div class="mb-3">
+    <label>Imagen</label>
+    <input type="file" class="form-control" id="imagen" name="imagen">
+  </div>
+  <div class="mb-3">
+    <label>Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" required>
+  </div>
+  <div class="mb-3">
+    <label>Descripcion</label>
+    <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+  </div>
+  <div class="mb-3">
+    <label>Precio</label>
+    <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Crear Producto</button>
+</form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
   </body>
