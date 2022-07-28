@@ -7,13 +7,26 @@ $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 var_dump($_POST);
 echo "</pre>"; */
 
-$nombre = $_POST['nombre'];
-$imagen = $_POST['imagen'];
-$precio = $_POST['precio'];
-$descripcion = $_POST['descripcion'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $consulta = $PDO->prepare("INSERT INTO productos(nombre, imagen, precio, descripcion)
+                            VALUE(:nombre, :imagen, :precio, :descripcion)");
+    $consulta->bindValue(":nombre", $_POST['nombre']);
+    $consulta->bindValue(":imagen", $_POST['imagen']);
+    $consulta->bindValue(":precio", $_POST['precio']);
+    $consulta->bindValue(":descripcion", $_POST['descripcion']);
+    $consulta->execute();
+}
 
-$PDO->exec("INSERT INTO productos(nombre, imagen, precio, descripcion)
-                            VALUE('$nombre', '$imagen', '$precio', '$descripcion')");
+$errores = [];
+
+if (!$_POST['nombre']) {
+    $errores[] = "El nombre del producto es obligatorio";
+}
+
+if (!$_POST['precio'] or $_POST['precio'] < 0) {
+    $errores[] = "El precio del producto es obligatorio y debe ser positivo";
+}
+
 ?>
 
 <!doctype html>
@@ -30,7 +43,13 @@ $PDO->exec("INSERT INTO productos(nombre, imagen, precio, descripcion)
     <h1>Creación de Productos</h1>
     <a href="index.php"><button type="button" class="btn btn-success btn-lg">Volver</button></a>
 
-    <form method="post" enctype="multipart/form-data">
+    <?php foreach ($errores as $error) {?>
+      <div class="alert alert-danger" role="alert">
+        <?=$error?>
+      </div>
+    <?php }?>
+
+    <form method="post" >
 
   <div class="mb-3">
     <label>Imagen</label>
@@ -38,7 +57,7 @@ $PDO->exec("INSERT INTO productos(nombre, imagen, precio, descripcion)
   </div>
   <div class="mb-3">
     <label>Nombre</label>
-    <input type="text" class="form-control" id="nombre" name="nombre" required>
+    <input type="text" class="form-control" id="nombre" name="nombre" >
   </div>
   <div class="mb-3">
     <label>Descripcion</label>
@@ -46,7 +65,7 @@ $PDO->exec("INSERT INTO productos(nombre, imagen, precio, descripcion)
   </div>
   <div class="mb-3">
     <label>Precio</label>
-    <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+    <input type="number" step="0.01" class="form-control" id="precio" name="precio" >
   </div>
 
   <button type="submit" class="btn btn-primary">Crear Producto</button>
