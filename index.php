@@ -53,7 +53,7 @@ echo "</pre>"; */
         <td><?=$producto['fecha_creacion']?></td>
         <td>
             <button type="button" class="btn btn-info btn-sm">Editar</button>
-            <form method="get" action="borrar.php">
+            <form method="POST" action="borrar.php">
               <input type="hidden" name="id" value="<?=$producto['id']?>"/>
               <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
             </form>
