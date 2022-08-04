@@ -1,7 +1,9 @@
 body {
-    padding: 50;
-    background-color: aqua;
+    padding: 50px;
 }
 .imagen{
-    width: 30px;
+    width: 50px;
+}
+form{
+    display:inline-block;
 }

@@ -45,14 +45,17 @@ echo "</pre>"; */
         <tr>
         <th scope="row"><?=$i + 1?></th>
         <td>
-          <img src="<?=$producto['imagen']?>" style="width: 100px;" class="imagen" >
+          <img src="<?=$producto['imagen']?>" class="imagen" >
         </td>
         <td><?=$producto['nombre']?></td>
         <td><?=$producto['descripcion']?></td>
         <td><?=$producto['precio']?></td>
         <td><?=$producto['fecha_creacion']?></td>
         <td>
-            <button type="button" class="btn btn-info btn-sm">Editar</button>
+            <form method="GET" action="actualizar.php">
+              <input type="hidden" name="id" value="<?=$producto['id']?>"/>
+              <button type="submit" class="btn btn-info btn-sm">Actualizar</button>
+            </form>
             <form method="POST" action="borrar.php">
               <input type="hidden" name="id" value="<?=$producto['id']?>"/>
               <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
