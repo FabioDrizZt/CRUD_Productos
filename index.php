@@ -3,7 +3,13 @@
 $PDO = new PDO("mysql:host=localhost; port=3306; dbname=crud_productos", "root", "");
 $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$consulta = $PDO->prepare("SELECT * FROM productos ORDER BY id DESC");
+$buscar = $_GET['buscar'] ?? '';
+if ($buscar) {
+    $consulta = $PDO->prepare("SELECT * FROM productos WHERE nombre LIKE :nombre");
+    $consulta->bindValue(':nombre', "%$buscar%");
+} else {
+    $consulta = $PDO->prepare("SELECT * FROM productos ORDER BY id DESC");
+}
 $consulta->execute();
 $productos = $consulta->fetchAll(pdo::FETCH_ASSOC);
 /* echo "<pre>";
@@ -28,7 +34,12 @@ echo "</pre>"; */
   <body>
     <h1>CRUD Productos</h1>
     <a href="crear.php"><button type="button" class="btn btn-success btn-lg">Crear</button></a>
-
+<form>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Nombre del producto" aria-label="Recipient's username" aria-describedby="button-addon2" name="buscar">
+  <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+</div>
+</form>
     <table class="table">
   <thead>
     <tr>
